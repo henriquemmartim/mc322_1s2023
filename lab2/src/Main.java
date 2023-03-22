@@ -9,7 +9,7 @@ public class Main {
         c1.setNome("null");
         System.out.printf("%s\n", c1.getNome());
         System.out.printf("%s\n", c1.getCpf());
-        System.out.printf("%d\n", c1.validar_cpf());
+        c1.validar_cpf();
         System.out.printf("%s\n", c1.getDataNascimento());
         System.out.printf("%d\n", c1.getIdade());
         System.out.printf("%s\n", c1.getEndereco());
@@ -24,7 +24,6 @@ public class Main {
         System.out.printf("%d\n", s1.getId());
         System.out.printf("%s\n", se1.getNome());
         se1.setNome("null");
-        System.out.printf("%s\n", se1.getNome());
         System.out.printf("%s\n", se1.getTelefone());
         System.out.printf("%s\n", se1.getEmail());
         System.out.printf("%s\n", se1.getEndereco());  

@@ -18,78 +18,74 @@ public class Cliente {
         cpf = cpf.replaceAll("[^0-9]", "");
     }
 
-    public int validar_cpf() {
-        remover_caracteres();
-        int condicao = 1;
+    public boolean sao_iguais(int tamanho_cpf) {
+        Boolean sao_iguais = true;
         int i;
-        int soma = 0;
-        int resto;
-        int tamanho_cpf = cpf.length();
-        if (tamanho_cpf != 11) {
+            for (i = 0; i < tamanho_cpf && sao_iguais == true; i++) {
+                if (cpf.charAt(i) != cpf.charAt(0)) {
+                    sao_iguais = false;
+                }
+            }
+        return sao_iguais;
+    }
 
-            condicao = 0;
+    public boolean verificar_digito(int j, int posicao) {
+        int i;
+        boolean condicao = true;
+        int resto;
+        int soma = 0;
+        for (i = 0; i < posicao; i++) {
+            int numero = Character.getNumericValue(cpf.charAt(i));
+            soma += numero * j;
+            j--;
+        }
+        resto = soma % 11;
+        if (resto == 0 || resto == 1) {
+            if (cpf.charAt(posicao) != '0') {
+                condicao = false;
+            }
         }
         else {
-            int sao_iguais = 1;
-            for (i = 0; i < tamanho_cpf && sao_iguais == 1; i++) {
-                if (cpf.charAt(i) != cpf.charAt(0)) {
-                    sao_iguais = 0;
-                }
-            }
-            if (sao_iguais == 1) {
-                condicao = 0;
-            }
-            else {  
-                int j = 10;
-                for (i = 0; i < 9; i++) {
-                    int numero = Character.getNumericValue(cpf.charAt(i));
-                    soma += numero * j;
-                    j--;
-                    // System.out.printf("%c", cpf.charAt(i));
-                }
-                System.out.println("\n");
-                resto = soma % 11;
-                // System.out.println(soma);
-                // System.out.println(resto);
-                if (resto == 0 || resto == 1) {
-                    if (cpf.charAt(9) != '0') {
-                        // System.out.printf("3");
-                        condicao = 0;
-                    }
-                }
-                else {
-                    resto = 11 - resto;
-                    int temp1 = Character.getNumericValue(cpf.charAt(9));
-                    if (temp1 != resto) {
-                        // System.out.printf("4");
-                        condicao = 0;
-                    }
-                }
-                soma = 0;
-                j = 11;
-                for (i = 0; i < 10; i++) {
-                    int numero = Character.getNumericValue(cpf.charAt(i));
-                    soma += numero * j;
-                    j--;
-                }
-                resto = soma % 11;
-                if (resto == 0 || resto == 1) {
-                    if (cpf.charAt(10) != '0') {
-                        // System.out.printf("5");
-                        condicao = 0;
-                    }
-                }
-                else {
-                    resto = 11 - resto;
-                    int temp2 = Character.getNumericValue(cpf.charAt(10));
-                    if (temp2 != resto) {
-                        // System.out.printf("6");
-                        condicao = 0;
-                    }
-                }
+            resto = 11 - resto;
+            int temp1 = Character.getNumericValue(cpf.charAt(posicao));
+            if (temp1 != resto) {
+                condicao = false;
             }
         }
         return condicao;
+    }
+
+    public void validar_cpf() {
+        remover_caracteres();
+        boolean condicao = true;
+        int tamanho_cpf = cpf.length();
+        if (tamanho_cpf != 11) {
+            condicao = false;
+        }
+        else {
+            boolean eh_igual = sao_iguais(tamanho_cpf);
+            if (eh_igual == true) {
+                condicao = false;
+            }
+            else{
+                boolean digito_verificador1 = verificar_digito(10, 9);
+                if (digito_verificador1 == false) {
+                    condicao = false;
+                }
+                else {
+                    boolean digito_verificador2 = verificar_digito(11, 10);
+                    if (digito_verificador2 == false) {
+                        condicao = false;
+                    }
+                }
+            }
+        }
+        if (condicao == true) {
+            System.out.printf("Válido" + "\n");
+        }
+        else {
+            System.out.printf("Inválido" + "\n");
+        }
     }
 
     public String getNome() {
