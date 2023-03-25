@@ -14,9 +14,17 @@ public class Cliente {
         this.endereco = endereco;
     }
 
+    /*
+     * Remove os caracteres que não são números da string do cpf. 
+     */
+
     public void remover_caracteres() {
         cpf = cpf.replaceAll("[^0-9]", "");
     }
+
+    /*
+     * Verifica se todos os números no cpf são iguais.
+     */
 
     public boolean sao_iguais(int tamanho_cpf) {
         Boolean sao_iguais = true;
@@ -29,7 +37,17 @@ public class Cliente {
         return sao_iguais;
     }
 
+    /*
+     * Verifica se os dígitos verificadores são válidos 
+     */
+
     public boolean verificar_digito(int j, int posicao) {
+        
+        // essa variável posição representa a posição do dígito verificador no cpf.
+
+        // a variável j representa o valor q deve ser multiplicado pelo número correspondente
+        // nas posições do cpf.
+        
         int i;
         boolean condicao = true;
         int resto;
@@ -136,8 +154,5 @@ public class Cliente {
             ", idade:'" + getIdade() + "'" +
             ", endereco:'" + getEndereco() + "'" +
             "}";
-    }
-
-        
-
+    }   
 }

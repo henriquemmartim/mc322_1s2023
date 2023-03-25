@@ -2,7 +2,7 @@ package lab2.src;
 import java.util.Random;
 
 public class Sinistro {
-    private int id;
+    private static int id;
     private String data;
     private String endereco;
 
@@ -12,6 +12,10 @@ public class Sinistro {
         this.endereco = endereco;
     }
 
+    /*
+     * Gera um inteiro aleatório como o id do sinistro. 
+     */
+
     public void valor_randomico() {
         Random gerador = new Random();
         id = gerador.nextInt();
@@ -19,10 +23,6 @@ public class Sinistro {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getData() {
