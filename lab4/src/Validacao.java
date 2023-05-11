@@ -1,6 +1,11 @@
 public class Validacao {
 
 
+    public static String remover_caracteres(String cadastro) {
+        cadastro = cadastro.replaceAll("[^0-9]", "");
+        return cadastro;
+    }
+
     /*
      * Verifica se todos os números no cpf são iguais.
      */
@@ -52,7 +57,8 @@ public class Validacao {
         return condicao;
     }
 
-    public static void validar_cpf(String cpf) {
+    public static boolean validar_cpf(String cpf) {
+        cpf = remover_caracteres(cpf);
         boolean condicao = true;
         int tamanho_cpf = cpf.length();
         if (tamanho_cpf != 11) {
@@ -78,9 +84,11 @@ public class Validacao {
         }
         if (condicao == true) {
             System.out.print("CPF válido." + "\n");
+            return true;
         }
         else {
             System.out.print("CPF inválido." + "\n");
+            return false;
         }
     }
 
@@ -129,7 +137,8 @@ public class Validacao {
         return condicao;
     }
 
-    public static void validar_cnpj(String cnpj) {
+    public static boolean validar_cnpj(String cnpj) {
+        cnpj = remover_caracteres(cnpj);
         boolean condicao = true;
         int tamanho_cnpj = cnpj.length();
         if (tamanho_cnpj != 14) {
@@ -156,9 +165,11 @@ public class Validacao {
         
         if (condicao == true) {
             System.out.printf("CNPJ Válido" + "\n");
+            return true;
         }
         else {
             System.out.printf("CNPJ Inválido" + "\n");
+            return false;
         }
     }
 
