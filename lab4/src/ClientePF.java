@@ -96,88 +96,8 @@ public class ClientePF extends Cliente{
     }
 
     /*
-     * Verifica se todos os números no cpf são iguais.
+     * Calcula o score com base na fórmula fornecida.
      */
-
-    public boolean sao_iguais(int tamanho_cpf) {
-        Boolean sao_iguais = true;
-        int i;
-            for (i = 0; i < tamanho_cpf && sao_iguais == true; i++) {
-                if (cpf.charAt(i) != cpf.charAt(0)) {
-                    sao_iguais = false;
-                }
-            }
-        return sao_iguais;
-    }
-
-    /*
-     * Verifica se os dígitos verificadores são válidos 
-     */
-
-    public boolean verificar_digito(int j, int posicao) {
-        
-        // essa variável posição representa a posição do dígito verificador no cpf.
-
-        // a variável j representa o valor q deve ser multiplicado pelo número correspondente
-        // nas posições do cpf.
-        
-        int i;
-        boolean condicao = true;
-        int resto;
-        int soma = 0;
-        for (i = 0; i < posicao; i++) {
-            int numero = Character.getNumericValue(cpf.charAt(i));
-            soma += numero * j;
-            j--;
-        }
-        resto = soma % 11;
-        if (resto == 0 || resto == 1) {
-            if (cpf.charAt(posicao) != '0') {
-                condicao = false;
-            }
-        }
-        else {
-            resto = 11 - resto;
-            int temp1 = Character.getNumericValue(cpf.charAt(posicao));
-            if (temp1 != resto) {
-                condicao = false;
-            }
-        }
-        return condicao;
-    }
-
-    public void validar_cpf() {
-        boolean condicao = true;
-        int tamanho_cpf = cpf.length();
-        if (tamanho_cpf != 11) {
-            condicao = false;
-        }
-        else {
-            boolean eh_igual = sao_iguais(tamanho_cpf);
-            if (eh_igual == true) {
-                condicao = false;
-            }
-            else{
-                boolean digito_verificador1 = verificar_digito(10, 9);
-                if (digito_verificador1 == false) {
-                    condicao = false;
-                }
-                else {
-                    boolean digito_verificador2 = verificar_digito(11, 10);
-                    if (digito_verificador2 == false) {
-                        condicao = false;
-                    }
-                }
-            }
-        }
-        if (condicao == true) {
-            System.out.print("CPF válido." + "\n");
-        }
-        else {
-            System.out.print("CPF inválido." + "\n");
-        }
-    }
-
 
     @Override
     public double calculaScore() {

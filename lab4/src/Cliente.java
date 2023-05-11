@@ -50,6 +50,8 @@ public class Cliente {
         }
     }
 
+    // Recebe a placa do veiculo e remove ele da lista.
+
     public boolean removerVeiculo(String veiculo) {
         Iterator<Veiculo> i = listaVeiculos.iterator();
         while(i.hasNext()) {
@@ -62,8 +64,15 @@ public class Cliente {
         return false; // nao encontrou alguem com o nome dado para ser retirado
     }
 
-    public List<Veiculo> getListaVeiculos() {
-        return listaVeiculos;
+
+    /*
+     * Printa os veiculos do cliente.
+     */
+
+    public void getListaVeiculos() {
+        for (Veiculo v : listaVeiculos) {
+            System.out.print(v.toString());
+        }
     }
 
     public double calculaScore() {

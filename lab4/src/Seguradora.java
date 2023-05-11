@@ -60,7 +60,7 @@ public class Seguradora {
      * Recebe um o tipo de cliente e cria uma lista deste tipo e adiciona os clientes desse tipo na lista
      */
 
-    public List <Cliente> listarClientes(String tipoCliente) {
+    public void listarClientes(String tipoCliente) {
         if (tipoCliente.equals("PF")) {
             List <Cliente> listaClientePFs = new ArrayList<Cliente>();
             for (Cliente c : listaClientes) {
@@ -68,7 +68,9 @@ public class Seguradora {
                     listaClientePFs.add(c);
                 }
             }
-            return listaClientePFs;
+            for (Cliente c : listaClientePFs) {
+                System.out.println(c.getCadastro());
+            }
         }
         else {
             List <Cliente> listaClientesPJs = new ArrayList<Cliente>();
@@ -77,7 +79,9 @@ public class Seguradora {
                     listaClientesPJs.add(c);
                 }
             }
-            return listaClientesPJs;
+            for (Cliente c : listaClientesPJs) {
+                System.out.println(c.getCadastro());
+            }
         }
     }
 
@@ -85,11 +89,22 @@ public class Seguradora {
      * Gera um sinistro
      */
 
-    public boolean gerarSinistros(String data, String endereco, Veiculo veiculo, Cliente cliente) {
-        Sinistro sinistro = new Sinistro(data, endereco, this, veiculo, cliente);
-        boolean gerar = listaSinistros.add(sinistro);
-        return gerar;
+    public void gerarSinistros(String data, String endereco, String veiculo, String cliente) {
+        for (Cliente c : listaClientes) {
+            if (c.getCadastro().equals(cliente)) {
+                for (Veiculo v : c.listaVeiculos) {
+                    if (v.getPlaca().equals(veiculo)) {
+                        Sinistro sinistro =  new Sinistro(data, endereco, this, v, c);
+                        listaSinistros.add(sinistro);
+                    }
+                }
+            }
+        }
     }
+
+    /*
+     * Recebe um id e retira ele da lista de sinistros da seguradora.
+     */
 
     public boolean excluirSinistro(int ID) {
         Iterator<Sinistro> i = listaSinistros.iterator();
@@ -105,7 +120,7 @@ public class Seguradora {
 
 
     /*
-     * Recebe um cliente e printa o toString desse cliente
+     * Recebe um cliente e printa o toString dos sinistros desse cliente.
      */
 
     public boolean visualizarSinistro(String cliente) {
@@ -118,11 +133,13 @@ public class Seguradora {
     }
 
     /*
-     * Devolve a lista de sinistros dessa seguradora
+     * Printa os sinistros da seguradora.
      */
 
-    public List <Sinistro> listarSinistro() {
-        return listaSinistros;
+    public void listarSinistro() {
+        for (Sinistro s : listaSinistros) {
+            System.out.println(s.toString());
+        }
     }
 
     public String getNome() {
@@ -166,6 +183,11 @@ public class Seguradora {
             "}";
     }
 
+
+    /*
+     * Calcula o preco do seguro de um cliente com base no seus sinistros e no seu score.
+     */
+
     public void calcularPrecoSeguroCliente(Cliente c) {
         int quantidade_sinistros = 0;
         for (Sinistro s : listaSinistros) {
@@ -175,26 +197,49 @@ public class Seguradora {
         }
         double preco_seguro =  c.calculaScore() * (1 + quantidade_sinistros);
         c.valorSeguro = preco_seguro;
-        // return preco_seguro;
     }
+
+
+    /*
+     * Soma os valores do seguro de todos os clientes.
+     */
 
     public double calcularReceita() {
         double receita = 0;
         for (Cliente c : listaClientes) {
-            // receita += calcularPrecoSeguroCliente(c);
             receita += c.valorSeguro;
 
         }
         return receita;
     }
 
-    public void transferirSeguro(Cliente c1, Cliente c2) {
-        for (Veiculo v : c1.listaVeiculos) {
-            c2.listaVeiculos.add(v);
+
+    /*
+     * Recebe os cadastros de 2 clientes e passa o seguro do c1 para o c2.
+     */
+
+    public void transferirSeguro(String c1, String c2) {
+        Cliente cliente1 = null;
+        Cliente cliente2 = null;
+        for (Cliente c : listaClientes) {
+            if (c.getCadastro().equals(c1)) {
+                cliente1 = c;
+            }
+            if (c.getCadastro().equals(c2)) {
+                cliente2 = c;
+            }
         }
-        removerClientes(c1.getCadastro());
-        calcularPrecoSeguroCliente(c2);
+        for (Veiculo v : cliente1.listaVeiculos) {
+            cliente2.listaVeiculos.add(v);
+        }
+        removerClientes(cliente1.getCadastro());
+        calcularPrecoSeguroCliente(cliente2);
     }
+
+
+    /*
+     * Recebe o cadastro de um cliente e um veiculo e coloca este veiculo na lista do cliente.
+     */
 
     public void cadastrarVeiculo(String cliente , Veiculo veiculo) {
         for (Cliente c : listaClientes) {
@@ -205,6 +250,11 @@ public class Seguradora {
         }
     }
 
+
+    /*
+     * Recebe um cadastro e uma placa e retira o veiculo com essa placa da lista do cliente.
+     */
+
     public void excluirVeiculo(String cliente, String veiculo) {
         for (Cliente c : listaClientes) {
             if (c.getCadastro().equals(cliente)) {
@@ -214,14 +264,42 @@ public class Seguradora {
         }
     }
 
-    public List<Veiculo> listarVeiculos() {
-        List <Veiculo> veiculosSeguradora = new ArrayList<Veiculo>();
+
+    /*
+     * Printa todos os veiculos da seguradora
+     */
+
+    public void listarVeiculos() {
         for (Cliente c : listaClientes) {
             for (Veiculo v : c.listaVeiculos) {
-                veiculosSeguradora.add(v);
+                System.out.println(v.toString());
             }
         }
-        return veiculosSeguradora;
+    }
+
+
+
+    /*
+     * Recebe um cadastro e printa os veiculos dele.
+     */
+
+    public void listarVeiculosPorCliente(String cliente) {
+        for (Cliente c : listaClientes) {
+            if (c.getCadastro().equals(cliente)) {
+                c.getListaVeiculos();
+            }
+        }
+    }
+
+
+    /*
+     * Atualiza o valor do seguro de todos os cliente.
+     */
+
+    public void atualizarValorSeguro() {
+        for (Cliente cliente : listaClientes) {
+            calcularPrecoSeguroCliente(cliente);
+        }
     }
 
 
