@@ -377,6 +377,4 @@ public class Main {
         scanner.close();
 	}
 
-    // teste do commit
-
 }
